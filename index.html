@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>组长</title>
+    <title>谢文洁</title>
     <style>
         body, html {
             height: 100%;
@@ -33,7 +33,6 @@
                 opacity: 0;
             }
         }
-
     </style>
 </head>
 <body>
@@ -57,35 +56,44 @@
             const randomFontSize = Math.random() * 50 + 30;  // 随机字体大小在30到80之间
             const randomOpacity = Math.random() * 0.5 + 0.5; // 随机透明度在0.5到1之间
             const randomZIndex = Math.floor(Math.random() * 10 + 1); // 随机层级
-            const animationDuration = Math.random() * 5 + 4; // 随机动画时长，4到9秒之间
+            const animationDuration = 3; // 每个文本存在3秒
 
             textElement.style.left = `${randomX}px`;
             textElement.style.fontSize = `${randomFontSize}px`;
             textElement.style.opacity = randomOpacity;
             textElement.style.zIndex = randomZIndex;
 
-            // 为文本元素添加流星掉落的动画
-            textElement.style.animation = `fall ${animationDuration}s linear infinite`;
+            // 为文本元素添加流星掉落的动画，持续3秒
+            textElement.style.animation = `fall ${animationDuration}s linear forwards`;
 
             // 等待1秒后使文字完全显示
             setTimeout(() => {
                 textElement.style.opacity = 1;
             }, 100);
 
+            // 设置动画结束后的处理
+            textElement.addEventListener('animationend', () => {
+                textElement.remove(); // 动画结束后移除文本元素
+            });
+
             return textElement;
         }
 
-        // 每秒生成一个新的文本元素
-        function createWord() {
+        // 每次生成多个文本元素
+        function createWords() {
             const currentWord = words[index];
             index = (index + 1) % words.length;
 
-            // 创建新的文本元素
-            createTextElement(currentWord);
+            // 生成多个文本，每次生成 5 到 10 个
+            const numTextElements = Math.floor(Math.random() * 6 ); // 随机生成 5 到 10 个文本
+
+            for (let i = 0; i < numTextElements; i++) {
+                createTextElement(currentWord);
+            }
         }
 
-        // 每秒生成一个新的流星
-        setInterval(createWord, 1000);
+        // 每秒生成多个流星
+        setInterval(createWords, 1000);
     </script>
 </body>
 </html>
