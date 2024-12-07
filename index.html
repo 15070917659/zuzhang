@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组长</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* 防止出现滚动条 */
+            position: relative;
+            background-color: black; /* 背景色设置为黑色，便于文字显示 */
+        }
+
+        .text-item {
+            position: absolute;
+            color: red;
+            opacity: 0;
+            pointer-events: none; /* 避免文字阻挡点击 */
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            transition: opacity 1s ease-in-out;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px); /* 起始位置在屏幕上方 */
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)); /* 结束位置在屏幕下方 */
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <script>
+        const words = [
+            "谢文洁伟大👍👍👍", "写文洁伟大👍👍👍", "刘政伟大👍👍👍", 
+            "夏鑫伟大👍👍👍", "李宇宁伟大👍👍👍", "为人民服务👍👍👍", 
+            "那你牛逼了👍👍👍", "你已经完全去AI化了👍👍👍",
+        ];
+        let index = 0;
+
+        // 创建文本元素
+        function createTextElement(text) {
+            const textElement = document.createElement("div");
+            textElement.classList.add("text-item");
+            textElement.textContent = text;
+            document.body.appendChild(textElement);
+
+            // 随机生成位置、字体大小、透明度和动画时长
+            const randomX = Math.random() * window.innerWidth;
+            const randomFontSize = Math.random() * 50 + 30;  // 随机字体大小在30到80之间
+            const randomOpacity = Math.random() * 0.5 + 0.5; // 随机透明度在0.5到1之间
+            const randomZIndex = Math.floor(Math.random() * 10 + 1); // 随机层级
+            const animationDuration = Math.random() * 5 + 4; // 随机动画时长，4到9秒之间
+
+            textElement.style.left = `${randomX}px`;
+            textElement.style.fontSize = `${randomFontSize}px`;
+            textElement.style.opacity = randomOpacity;
+            textElement.style.zIndex = randomZIndex;
+
+            // 为文本元素添加流星掉落的动画
+            textElement.style.animation = `fall ${animationDuration}s linear infinite`;
+
+            // 等待1秒后使文字完全显示
+            setTimeout(() => {
+                textElement.style.opacity = 1;
+            }, 100);
+
+            return textElement;
+        }
+
+        // 每秒生成一个新的文本元素
+        function createWord() {
+            const currentWord = words[index];
+            index = (index + 1) % words.length;
+
+            // 创建新的文本元素
+            createTextElement(currentWord);
+        }
+
+        // 每秒生成一个新的流星
+        setInterval(createWord, 1000);
+    </script>
+</body>
+</html>
