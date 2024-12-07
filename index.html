@@ -33,14 +33,17 @@
                 opacity: 0;
             }
         }
+
     </style>
 </head>
 <body>
     <script>
         const words = [
-            "谢文洁伟大👍👍👍", "刘政伟大👍👍👍", 
-            "夏鑫伟大👍👍👍", "李宇宁伟大👍👍👍", "为人民服务👍👍👍", 
-            "那你牛逼了👍👍👍", "你已经完全去AI化了👍👍👍",
+            "谢文洁伟大👍👍👍","刘政伟大👍👍👍", 
+            "夏鑫伟大👍👍👍", "李宇宁伟大👍👍👍", "为人民服务👍👍👍"
+        ];
+        const specialWords = [
+            "那你牛逼了👍👍👍", "你已经完全去AI化了👍👍👍"
         ];
         let index = 0;
 
@@ -53,17 +56,17 @@
 
             // 随机生成位置、字体大小、透明度和动画时长
             const randomX = Math.random() * window.innerWidth;
-            const randomFontSize = Math.random() * 50 + 30;  // 随机字体大小在30到80之间
+            const randomFontSize = Math.random() * 5 + 5 + "vw";  // 随机字体大小在5vw到10vw之间
             const randomOpacity = Math.random() * 0.5 + 0.5; // 随机透明度在0.5到1之间
             const randomZIndex = Math.floor(Math.random() * 10 + 1); // 随机层级
-            const animationDuration = 3; // 每个文本存在3秒
+            const animationDuration = Math.random() * 4 + 6; // 随机设置动画时长，范围在6到10秒之间
 
             textElement.style.left = `${randomX}px`;
-            textElement.style.fontSize = `${randomFontSize}px`;
+            textElement.style.fontSize = randomFontSize;
             textElement.style.opacity = randomOpacity;
             textElement.style.zIndex = randomZIndex;
 
-            // 为文本元素添加流星掉落的动画，持续3秒
+            // 为文本元素添加流星掉落的动画，持续随机时长
             textElement.style.animation = `fall ${animationDuration}s linear forwards`;
 
             // 等待1秒后使文字完全显示
@@ -79,21 +82,24 @@
             return textElement;
         }
 
-        // 每次生成多个文本元素
-        function createWords() {
-            const currentWord = words[index];
-            index = (index + 1) % words.length;
-
-            // 生成多个文本，每次生成 5 到 10 个
-            const numTextElements = Math.floor(Math.random() * 6 ); // 随机生成 5 到 10 个文本
-
-            for (let i = 0; i < numTextElements; i++) {
+        // 随机生成文本，确保特殊文本是连续的
+        function createWord() {
+            let currentWord;
+            if (Math.random() > 0.5) { // 随机50%概率选择特殊的两句
+                currentWord = specialWords[0];  // 先显示“那你牛逼了👍👍👍”
+                createTextElement(currentWord);
+                setTimeout(() => {
+                    createTextElement(specialWords[1]);  // 紧接着显示“你已经完全去AI化了👍👍👍”
+                }, 500); // 延时0.5秒来显示第二句
+            } else {
+                currentWord = words[index];
+                index = (index + 1) % words.length;
                 createTextElement(currentWord);
             }
         }
 
-        // 每秒生成多个流星
-        setInterval(createWords, 1000);
+        // 每秒生成一个新的流星
+        setInterval(createWord, 1000);
     </script>
 </body>
 </html>
